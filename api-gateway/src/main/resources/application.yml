@@ -1,0 +1,17 @@
+users.url: "http://localhost:8081"
+content.url: "http://localhost:8082"
+api-gateway.url: "http://localhost:8080"
+
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: user-api
+        uri: ${users.url}
+        predicates:
+        - Path=/api/v1/user/**
+
+      - id: content-api
+        uri: ${content.url}
+        predicates:
+        - Path=/api/v1/content/**
