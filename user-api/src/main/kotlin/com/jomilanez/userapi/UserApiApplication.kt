@@ -8,6 +8,5 @@ class UserApiApplication
 
 fun main(args: Array<String>) {
     runApplication<UserApiApplication>(*args)
-
 }
 
