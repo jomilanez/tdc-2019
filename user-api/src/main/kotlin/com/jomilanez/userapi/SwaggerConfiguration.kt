@@ -7,11 +7,13 @@ import org.springframework.http.MediaType
 import springfox.documentation.builders.ApiInfoBuilder
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
-import springfox.documentation.service.ApiInfo
-import springfox.documentation.service.Contact
+import springfox.documentation.service.*
 import springfox.documentation.spi.DocumentationType
+import springfox.documentation.spi.service.contexts.SecurityContext
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
+
+const val API_KEY_HEADER = "api-key"
 
 @EnableSwagger2
 @Configuration
@@ -25,6 +27,8 @@ class SwaggerConfiguration(private val swaggerProperties: SwaggerProperties) {
             .protocols(setOf(swaggerProperties.protocol))
             .produces(setOf(MediaType.APPLICATION_JSON_VALUE))
             .apiInfo(apiInfo())
+            .securitySchemes(listOf(apiKeyWithName(API_KEY_HEADER)))
+            .securityContexts(listOf(SecurityContext.builder().securityReferences(globalAuth()).build()))
             .useDefaultResponseMessages(false)
             .produces(setOf("application/json"))
             .select()
@@ -42,5 +46,16 @@ class SwaggerConfiguration(private val swaggerProperties: SwaggerProperties) {
             .version("1.0")
             .build()
     }
+
+
+    private fun globalAuth(): List<SecurityReference> = listOf(
+        SecurityReference(
+            API_KEY_HEADER, listOf(
+                AuthorizationScope("*", "all access to resources")
+            ).toTypedArray()
+        )
+    )
+
+    private fun apiKeyWithName(name: String): ApiKey = ApiKey(name, name, "header")
 
 }
