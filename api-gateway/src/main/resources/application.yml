@@ -15,3 +15,15 @@ spring:
         uri: ${content.url}
         predicates:
         - Path=/api/v1/content/**
+
+      - id: aGroup
+        uri: ${content.url}
+        predicates:
+        - Path=/api/v1/abtest/**
+        - Header=X-Request-AbGroup, a
+
+      - id: bGroup
+        uri: ${users.url}
+        predicates:
+        - Path=/api/v1/abtest/**
+        - Header=X-Request-AbGroup, b
