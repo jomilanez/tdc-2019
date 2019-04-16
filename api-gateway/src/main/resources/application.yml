@@ -27,3 +27,17 @@ spring:
         predicates:
         - Path=/api/v1/abtest/**
         - Header=X-Request-AbGroup, b
+
+      - id: swagger-user
+        uri: ${users.url}
+        predicates:
+        - Path=/v2/api-docs/user
+        filters:
+        - RewritePath=/v2/api-docs/user, /v2/api-docs
+
+      - id: swagger-content
+        uri: ${content.url}
+        predicates:
+        - Path=/v2/api-docs/content
+        filters:
+        - RewritePath=/v2/api-docs/content, /v2/api-docs

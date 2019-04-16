@@ -1,6 +1,6 @@
 server:
   port: 8081
 
-
-
-
+swagger:
+  protocol: http
+  host: localhost:8080
